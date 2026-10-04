@@ -1,0 +1,52 @@
+REM ============================================================
+REM  OLYMPIAD PC SETUP - LINUX (ROSA 6.12 / KDE Plasma 5.27.11)
+REM  Flipper Zero / BadUSB
+REM
+REM  АВТОНОМНЫЙ скрипт: не требует дополнительных файлов.
+REM  Шаги:
+REM   1) Вход в систему через экран Plasma (SDDM)
+REM   2) Открыть терминал (konsole)
+REM   3) Подключить Wi-Fi через nmcli (работает без root)
+REM   4) Проверить подключение
+REM
+REM  ВАЖНО: раскладка Flipper = English (US).
+REM  На экране входа должна быть активна EN-раскладка.
+REM ============================================================
+
+REM ---- Раскладка: если на экране входа активна RU, раскомментируйте
+REM ---- ОДНУ строку переключения (по результатам теста):
+REM ALT SHIFT          ; если переключение RU<->EN на Alt+Shift
+REM GUI SPACE          ; если на Win+Space
+REM (если уже активна EN - ничего не нужно)
+
+DEFAULTDELAY 40
+
+REM Пароль пользователя:
+REM Вводим спецсимволы явными Shift-нажатиями, чтобы не зависеть
+REM от обработки % и > внутри STRING.
+STRING ; Добавить пароль
+ENTER
+
+REM Ждём загрузки рабочего стола Plasma
+DELAY 12000
+
+REM ---- 2) Открываем терминал konsole (Ctrl+Alt+T) ----
+CTRL ALT t
+DELAY 3000
+
+REM ---- 3) Подключаем Wi-Fi через nmcli (работает без root) ----
+REM Polkit на этой системе разрешает пользователю создавать
+REM соединения, поэтому sudo не нужен.
+STRING nmcli dev wifi connect ssid_replace password password_wifi_replace
+ENTER
+DELAY 6000
+
+REM ---- 4) Проверка подключения ----
+STRING nmcli -t -f ACTIVE,SSID dev wifi
+ENTER
+DELAY 3000
+
+REM ---- Завершение ----
+REM Закрываем терминал
+STRING exit
+ENTER
